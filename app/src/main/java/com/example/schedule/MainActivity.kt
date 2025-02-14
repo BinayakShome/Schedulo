@@ -6,6 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.schedule.navigation.AppNavigation
 //import com.example.schedule.repo.GoogleAuthUiClient
 import com.example.schedule.ui.theme.ScheduleTheme
 import com.example.schedule.view.util.LoginScreen
@@ -33,12 +36,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ScheduleTheme (){
-                LoginScreen(
-                    state = googleAuthViewModel.signInResult,
-                    onSignInClick = {
-                        googleAuthViewModel.startGoogleSignIn(signInLauncher)
-                    }
-                )
+                AppNavigation()
             }
         }
     }

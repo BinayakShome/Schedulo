@@ -50,6 +50,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.navigation.runtime.android)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.runtime.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

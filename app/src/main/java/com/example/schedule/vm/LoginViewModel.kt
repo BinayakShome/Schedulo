@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.schedule.R
 import com.example.schedule.data.model.SignInResult
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -18,7 +17,7 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.launch
+
 
 class LoginViewModel : ViewModel() {
     var signInResult by mutableStateOf<SignInResult?>(null)
@@ -26,38 +25,53 @@ class LoginViewModel : ViewModel() {
 
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
-    private lateinit var oneTapClient: SignInClient
-    private lateinit var signInRequest: BeginSignInRequest
+
+    private var oneTapClient: SignInClient? = null
+    private var signInRequest: BeginSignInRequest? = null
 
     fun initGoogleSignIn(context: Activity) {
-        oneTapClient = Identity.getSignInClient(context)
-        signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setServerClientId(context.getString(R.string.web_client_id))
-                    .setFilterByAuthorizedAccounts(false)
-                    .build()
-            ).build()
+        if (oneTapClient == null) { // Prevent re-initialization
+            oneTapClient = Identity.getSignInClient(context)
+            signInRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(
+                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        .setServerClientId(context.getString(R.string.web_client_id))
+                        .setFilterByAuthorizedAccounts(false)
+                        .build()
+                ).build()
+        }
     }
 
     fun startGoogleSignIn(launcher: ActivityResultLauncher<IntentSenderRequest>) {
-        oneTapClient.beginSignIn(signInRequest)
+        val client = oneTapClient ?: run {
+            signInResult = SignInResult(error = "Google Sign-In is not initialized.")
+            return
+        }
+
+        val request = signInRequest ?: run {
+            signInResult = SignInResult(error = "Sign-In request is missing.")
+            return
+        }
+
+        client.beginSignIn(request)
             .addOnSuccessListener { result ->
-                launcher.launch(IntentSenderRequest.Builder(result.pendingIntent).build())
+                val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent).build()
+                launcher.launch(intentSenderRequest)
             }
-            .addOnFailureListener {
-                signInResult = SignInResult(error = "No Google accounts found.")
+            .addOnFailureListener { e ->
+                Log.e("SignIn", "Google Sign-In failed", e)
+                signInResult = SignInResult(error = e.localizedMessage ?: "Google Sign-In failed")
             }
     }
 
     fun handleSignInResult(data: Intent?) {
-        val credential = oneTapClient.getSignInCredentialFromIntent(data)
-        val idToken = credential.googleIdToken
+        try {
+            val credential = oneTapClient?.getSignInCredentialFromIntent(data)
+            val idToken = credential?.googleIdToken
 
-        if (idToken != null) {
-            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-            viewModelScope.launch {
+            if (idToken != null) {
+                val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
                 auth.signInWithCredential(firebaseCredential)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -69,17 +83,26 @@ class LoginViewModel : ViewModel() {
                                     "email" to it.email
                                 )
                                 firestore.collection("users").document(it.uid).set(userData)
-                                    .addOnSuccessListener { Log.d("Firestore", "User added") }
-                                    .addOnFailureListener { e -> Log.e("Firestore", "Error adding user", e) }
+                                    .addOnSuccessListener {
+                                        Log.d("Firestore", "User added to Firestore")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("Firestore", "Error adding user", e)
+                                    }
                             }
                             signInResult = SignInResult(success = auth)
                         } else {
-                            signInResult = SignInResult(error = task.exception?.message ?: "Sign-in failed")
+                            signInResult = SignInResult(
+                                error = task.exception?.message ?: "Firebase sign-in failed"
+                            )
                         }
                     }
+            } else {
+                signInResult = SignInResult(error = "Invalid Google Sign-In credentials")
             }
-        } else {
-            signInResult = SignInResult(error = "Invalid sign-in credentials")
+        } catch (e: Exception) {
+            Log.e("SignIn", "Error handling sign-in result", e)
+            signInResult = SignInResult(error = e.localizedMessage ?: "Sign-in result handling failed")
         }
     }
 }
