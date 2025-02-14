@@ -1,8 +1,13 @@
 package com.example.schedule.vm
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.runtime.getValue
@@ -29,6 +34,15 @@ class LoginViewModel : ViewModel() {
     private var oneTapClient: SignInClient? = null
     private var signInRequest: BeginSignInRequest? = null
 
+    @SuppressLint("ServiceCast")
+    private fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+
     fun initGoogleSignIn(context: Activity) {
         if (oneTapClient == null) { // Prevent re-initialization
             oneTapClient = Identity.getSignInClient(context)
@@ -43,7 +57,12 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun startGoogleSignIn(launcher: ActivityResultLauncher<IntentSenderRequest>) {
+    fun startGoogleSignIn(context: Context, launcher: ActivityResultLauncher<IntentSenderRequest>) {
+        if (!isInternetAvailable(context)) {
+            Toast.makeText(context, "Internet on vacation?\uD83D\uDE0F\nTry again later!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val client = oneTapClient ?: run {
             signInResult = SignInResult(error = "Google Sign-In is not initialized.")
             return
@@ -64,6 +83,7 @@ class LoginViewModel : ViewModel() {
                 signInResult = SignInResult(error = e.localizedMessage ?: "Google Sign-In failed")
             }
     }
+
 
     fun handleSignInResult(data: Intent?) {
         try {

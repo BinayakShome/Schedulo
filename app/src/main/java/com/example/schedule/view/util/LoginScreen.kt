@@ -90,7 +90,7 @@ fun LoginScreen(
         LoginButton(
             iconOnly = false,
             onClick = {
-                loginViewModel.startGoogleSignIn(launcher)
+                loginViewModel.startGoogleSignIn(context, launcher)
             }
         )
     }
