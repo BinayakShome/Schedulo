@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Required for Google Sign-In -->
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Schedule"
         tools:targetApi="31">
+
+        <!-- Required for Firebase Google Sign-In -->
+<!--        <activity-->
+<!--            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"-->
+<!--            android:excludeFromRecents="true"-->
+<!--            android:exported="false" />-->
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -20,10 +30,10 @@
             android:theme="@style/Theme.Schedule">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

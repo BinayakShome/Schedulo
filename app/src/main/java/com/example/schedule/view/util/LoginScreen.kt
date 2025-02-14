@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -22,10 +23,14 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.schedule.R
+import com.example.schedule.data.model.SignInResult
 import com.example.schedule.view.component.LoginButton
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    state: SignInResult?,
+    onSignInClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,24 +48,32 @@ fun LoginScreen() {
         LottieAnimation(
             composition = composition,
             progress = { progress },
-            modifier = Modifier.size(400.dp)
+            modifier = Modifier.size(300.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Login Text
+        // Welcome Text
         Text(
             text = "Welcome to Schedulo",
             color = Color.White,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
+        val context = LocalContext.current
+//        LaunchedEffect(state) {
+//            state.errorMessage?.let { error ->
+//                Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+//            }
+//        }
+
+        // Google Sign-In Button with Click Handler
         LoginButton(
             iconOnly = false,
-            onClick = { println("Google button clicked") }
+            onClick = onSignInClick
         )
     }
 }
