@@ -4,17 +4,20 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.schedule.view.util.HomeScreen
+import com.example.schedule.view.util.CurrentDayScreen
+import com.example.schedule.view.util.ProfileScreen
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 fun NavGraphBuilder.mainNavGraph(
     navController: NavController) {
     navigation(
-        startDestination = Screen.HomeScreen.route,
+        startDestination = Screen.CurrentDayScreen.route,
         route = "main"
     ) {
         // Home Screen
-        composable(Screen.HomeScreen.route) {
-            HomeScreen(
+        composable(Screen.CurrentDayScreen.route) {
+            CurrentDayScreen(
                 navController = navController
             )
         }
@@ -24,19 +27,19 @@ fun NavGraphBuilder.mainNavGraph(
 //            ParticipantFormScreen(navController = navController)
 //        }
 
-//        // Profile Screen with Logout
-//        composable(Screen.Profile.route) {
-//            ProfileScreen(
-//                navController = navController,
-//                onBackClick = { navController.popBackStack() },
-//                onLogOutClick = {
-//                    Firebase.auth.signOut()
-//                    navController.navigate("login_graph") {
-//                        popUpTo("main") { inclusive = true }
-//                    }
-//                }
-//            )
-//        }
+        // Profile Screen with Logout
+        composable(Screen.ProfileScreen.route) {
+            ProfileScreen(
+                navController = navController,
+                //onBackClick = { navController.popBackStack() },
+                onLogOutClick = {
+                    Firebase.auth.signOut()
+                    navController.navigate("login_graph") {
+                        popUpTo("main") { inclusive = true }
+                    }
+                }
+            )
+        }
     }
 }
 
