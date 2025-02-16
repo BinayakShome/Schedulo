@@ -1,6 +1,8 @@
 package com.example.schedule.vm
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
@@ -22,7 +24,6 @@ class ProfileViewModel : ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
 
     private var oneTapClient: SignInClient? = null
-    private var signInRequest: BeginSignInRequest? = null
 
     fun signOut(context: Context) {
         auth.signOut()
@@ -33,5 +34,12 @@ class ProfileViewModel : ViewModel() {
             Log.e("SignOut", "Error during Google sign-out", e)
             Toast.makeText(context, "Sign-out failed. Try again!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }
