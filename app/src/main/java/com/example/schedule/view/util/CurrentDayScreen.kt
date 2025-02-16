@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.schedule.view.component.BottomNavBar.BottomNavBar
 import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +54,9 @@ fun CurrentDayScreen(navController: NavController) {
                     containerColor = Color.DarkGray
                 )
             )
+        },
+        bottomBar = {
+            BottomNavBar(navController = navController)
         }
     ) { paddingValues ->
         Column(modifier = Modifier.fillMaxSize().background(Color.DarkGray)

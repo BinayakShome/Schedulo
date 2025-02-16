@@ -5,7 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.schedule.view.util.CurrentDayScreen
+import com.example.schedule.view.util.HolidayListScreen
 import com.example.schedule.view.util.ProfileScreen
+import com.example.schedule.view.util.WeekScreen
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
@@ -39,6 +41,14 @@ fun NavGraphBuilder.mainNavGraph(
                     }
                 }
             )
+        }
+
+        composable(Screen.WeekScreen.route) {
+            WeekScreen(navController = navController)
+        }
+
+        composable(Screen.HolidayListScreen.route) {
+            HolidayListScreen(navController = navController)
         }
     }
 }
