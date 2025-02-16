@@ -31,21 +31,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.schedule.view.component.LogOutButton
+import com.example.schedule.vm.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    onLogOutClick: () -> Unit,
-)
-{
+    onLogOutClick: () -> Unit
+) {
     val user = FirebaseAuth.getInstance().currentUser
     val photoUrl = user?.photoUrl
 
@@ -74,13 +76,19 @@ fun ProfileScreen(
                 )
             )
         }
-    )
-    {paddingValues ->
-        Column(modifier = Modifier.fillMaxSize().background(Color.DarkGray)
-            .padding(paddingValues)
-            .padding(16.dp))
-        {
-            Row (modifier = Modifier.fillMaxWidth()){
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.DarkGray)
+                .padding(paddingValues)
+                .padding(16.dp)
+        ) {
+            // Profile Picture and User Info
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 if (photoUrl != null) {
                     AsyncImage(
                         model = photoUrl,
@@ -107,7 +115,8 @@ fun ProfileScreen(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.width(8.dp))
+
+                Spacer(modifier = Modifier.width(16.dp))
 
                 Column {
                     Text(
@@ -116,8 +125,7 @@ fun ProfileScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(top = 8.dp)
+                        overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -125,19 +133,21 @@ fun ProfileScreen(
                         color = Color.White,
                         fontSize = 16.sp,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = user?.phoneNumber?.takeIf { it.isNotBlank() } ?: "Phone: Tumhe Kyun Batau",
                         color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        fontSize = 14.sp,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            LogOutButton(onLogOutClick = onLogOutClick)
         }
     }
 }
