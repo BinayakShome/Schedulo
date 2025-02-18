@@ -66,7 +66,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.android.gms:play-services-auth:21.1.1")
-
+    implementation("org.json:json:20230227")
     // Lottie Animation
     implementation("com.airbnb.android:lottie-compose:6.3.0")
 
