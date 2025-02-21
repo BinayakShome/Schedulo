@@ -15,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +35,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.schedule.R
 import com.example.schedule.view.component.BottomNavBar.BottomNavBar
+import com.example.schedule.view.component.NoInternet
 import com.example.schedule.vm.CurrentDayViewModel
 import com.example.schedule.vm.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -44,24 +47,25 @@ fun CurrentDayScreen(
     viewModel: CurrentDayViewModel
 ) {
     val context = LocalContext.current
-    val isConnected = remember { mutableStateOf(viewModel.isInternetAvailable(context)) }
+    val showNoInternet by viewModel.showNoInternet.collectAsState()
+
+    // Check internet availability on screen load
+    LaunchedEffect(Unit) {
+        viewModel.checkInternetAvailability(context)
+    }
+
     val user = FirebaseAuth.getInstance().currentUser
     val userName = user?.displayName
-        ?.substringBefore('_')  // Take only up to the first underscore
-        ?.substringBefore(' ')  // Take only up to the first space
+        ?.substringBefore('_')
+        ?.substringBefore(' ')
         ?: "User"
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.other_screen_no_internet_animation))
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = LottieConstants.IterateForever
-    )
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Hello, " + userName + " \uD83D\uDC4B",
+                        text = "Hello, $userName \uD83D\uDC4B",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -91,32 +95,14 @@ fun CurrentDayScreen(
                 .background(Color.DarkGray)
                 .padding(paddingValues)
         ) {
-            if (isConnected.value) {
-                // Show the regular content if online
+            if (showNoInternet) {
+                NoInternet()
+            } else {
                 Text(
                     text = "Welcome to Current Day Screen",
                     color = Color.White,
                     modifier = Modifier.padding(16.dp)
                 )
-            } else {
-                Column (
-                    modifier = Modifier.fillMaxSize().padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    LottieAnimation(
-                        composition = composition,
-                        progress = { progress },
-                        modifier = Modifier
-                            .size(400.dp)
-                    )
-                    Text(
-                        text = "The internet got lost... didn’t drop a pin!",
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                }
             }
         }
     }
