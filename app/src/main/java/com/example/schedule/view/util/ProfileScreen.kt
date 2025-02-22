@@ -28,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +48,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.schedule.R
+import com.example.schedule.view.component.DropDownMenu
 import com.example.schedule.view.component.LogOutButton
 import com.example.schedule.vm.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -184,7 +186,34 @@ fun ProfileScreen(
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
+//branch
+                var selectedOption by remember { mutableStateOf("Select your Branch") }
+                DropDownMenu(
+                    text = "Choose a category",
+                    options = listOf("Computer Science", "Information Technology", "Computer Science and System Engineering"),
+                    selectedOption = selectedOption,
+                    onOptionSelected = { selectedOption = it }
+                )
 
+                Spacer(modifier = Modifier.height(16.dp))
+//Section
+                DropDownMenu(
+                    text = "Choose a category",
+                    options = listOf("Computer Science", "Information Technology", "Computer Science and System Engineering"),
+                    selectedOption = selectedOption,
+                    onOptionSelected = { selectedOption = it }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+//year
+                DropDownMenu(
+                    text = "Choose a category",
+                    options = listOf("Computer Science", "Information Technology", "Computer Science and System Engineering"),
+                    selectedOption = selectedOption,
+                    onOptionSelected = { selectedOption = it }
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
                 LogOutButton(onLogOutClick = onLogOutClick)
             }
         }

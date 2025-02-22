@@ -1,18 +1,19 @@
 package com.example.schedule.view.component
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -21,42 +22,37 @@ import com.example.schedule.data.model.Holiday
 
 @Composable
 fun HolidayItem(holiday: Holiday) {
-    Box(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .background(Brush.verticalGradient(
-                colors = listOf(Color(0xFF00C6FF), Color(0xFF0072FF)) // Gradient background
-            ))
-            .clip(MaterialTheme.shapes.medium) // Rounded corners
+            .border(2.dp, Color.Cyan, shape = RoundedCornerShape(16.dp))
+            .padding(bottom = 8.dp), // Border added
+        shape = RoundedCornerShape(8.dp), // Matches border shape
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            // Decorative line
-            Box(
-                modifier = Modifier
-                    //.height(4.dp)
-                    .fillMaxWidth()
-                    .background(Color(0xFF00C6FF))
-            )
-
-            Text(
-                text = holiday.EVENT,
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp)
+        ) {
+            Text(holiday.EVENT,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
+                color = Color.Cyan)
+            Spacer(modifier = Modifier.height(16.dp))
+            Divider(
                 color = Color.White,
-                fontSize = 24.sp, // Slightly larger font size
-                modifier = Modifier.padding(bottom = 12.dp) // More spacing between title and other info
+                thickness = 2.dp,
+                modifier = Modifier.fillMaxWidth()
             )
-            Text(
-                text = "Date: ${holiday.DATE}",
-                color = Color(0xFFE0E0E0), // Lighter text color for secondary info
-                fontSize = 18.sp, // Slightly larger font size for date
-                modifier = Modifier.padding(bottom = 4.dp) // Add space between date and day
-            )
-            Text(
-                text = "Day: ${holiday.DAYS}",
-                color = Color(0xFFE0E0E0), // Lighter text color for secondary info
-                fontSize = 18.sp
-            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text("Date: " + holiday.DATE,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White)
+            Text(holiday.DAYS,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White)
         }
     }
 }
