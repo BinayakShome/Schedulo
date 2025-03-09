@@ -2,6 +2,7 @@ package com.example.schedule.view.util
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,10 +30,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -48,8 +50,8 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.schedule.R
-import com.example.schedule.view.component.DropDownMenu
-import com.example.schedule.view.component.LogOutButton
+import com.example.schedule.view.component.BottomSignature
+import com.example.schedule.view.component.CustomButton
 import com.example.schedule.vm.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -90,7 +92,17 @@ fun ProfileScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.DarkGray
-                )
+                ),
+                actions = {
+                    IconButton(onClick = { navController.navigate("SettingScreen") }) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Setting",
+                            tint = Color.White,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -100,122 +112,106 @@ fun ProfileScreen(
                 .background(Color.DarkGray)
                 .padding(paddingValues)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            if (!isConnected.value) {
-                val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.profile_screen_no_internet_animation))
-                val progress by animateLottieCompositionAsState(
-                    composition = composition,
-                    iterations = LottieConstants.IterateForever
-                )
-                LottieAnimation(
-                    composition = composition,
-                    progress = { progress },
-                    modifier = Modifier.size(300.dp)
-                )
-                Text(
-                    text = "Aliens must have stolen your Wi-Fi. \uD83D\uDC7D",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            } else {
-                // Profile Picture and User Info
-                val user = FirebaseAuth.getInstance().currentUser
-                val photoUrl = user?.photoUrl
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                if (!isConnected.value) {
+                    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.profile_screen_no_internet_animation))
+                    val progress by animateLottieCompositionAsState(
+                        composition = composition,
+                        iterations = LottieConstants.IterateForever
+                    )
+                    LottieAnimation(
+                        composition = composition,
+                        progress = { progress },
+                        modifier = Modifier.size(300.dp)
+                    )
+                    Text(
+                        text = "Aliens must have stolen your Wi-Fi. \uD83D\uDC7D",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                } else {
+                    val user = FirebaseAuth.getInstance().currentUser
+                    val photoUrl = user?.photoUrl
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (photoUrl != null) {
-                        AsyncImage(
-                            model = photoUrl,
-                            contentDescription = "Profile Picture",
-                            modifier = Modifier
-                                .size(120.dp)
-                                .clip(CircleShape)
-                                .border(2.dp, Color.Cyan, CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
-                    } else {
-                        Box(
-                            modifier = Modifier
-                                .size(120.dp)
-                                .clip(CircleShape)
-                                .background(Color.Gray),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.AccountCircle,
-                                contentDescription = "Default Profile",
-                                tint = Color.White,
-                                modifier = Modifier.size(120.dp)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (photoUrl != null) {
+                            AsyncImage(
+                                model = photoUrl,
+                                contentDescription = "Profile Picture",
+                                modifier = Modifier
+                                    .size(120.dp)
+                                    .clip(CircleShape)
+                                    .border(2.dp, Color.Cyan, CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Box(
+                                modifier = Modifier
+                                    .size(120.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.Gray),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.AccountCircle,
+                                    contentDescription = "Default Profile",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(120.dp)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Column {
+                            Text(
+                                text = user?.displayName ?: "Naam kya rakha, bhai? 😄",
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = user?.email ?: "Fraud lagte ho \uD83D\uDE0E",
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = user?.phoneNumber?.takeIf { it.isNotBlank() } ?: "Phone: Tumhe Kyun Batau",
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Column {
-                        Text(
-                            text = user?.displayName ?: "Naam kya rakha, bhai? 😄",
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = user?.email ?: "Fraud lagte ho \uD83D\uDE0E",
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = user?.phoneNumber?.takeIf { it.isNotBlank() } ?: "Phone: Tumhe Kyun Batau",
-                            color = Color.White,
-                            fontSize = 14.sp,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
+                    Spacer(modifier = Modifier.height(64.dp))
+                    CustomButton(
+                        onLogOutClick = onLogOutClick,
+                        text = "Log out\uD83D\uDC4B",
+                        btncolor = Brush.horizontalGradient(
+                            colors = listOf(Color(0xFFE53935), Color(0xFFFFA726))
+                        ),
+                        textcolor = Color.White
+                    )
                 }
-
-                Spacer(modifier = Modifier.height(24.dp))
-//branch
-                var selectedOption by remember { mutableStateOf("Select your Branch") }
-                DropDownMenu(
-                    text = "Choose a category",
-                    options = listOf("Computer Science", "Information Technology", "Computer Science and System Engineering"),
-                    selectedOption = selectedOption,
-                    onOptionSelected = { selectedOption = it }
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-//Section
-                DropDownMenu(
-                    text = "Choose a category",
-                    options = listOf("Computer Science", "Information Technology", "Computer Science and System Engineering"),
-                    selectedOption = selectedOption,
-                    onOptionSelected = { selectedOption = it }
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-//year
-                DropDownMenu(
-                    text = "Choose a category",
-                    options = listOf("Computer Science", "Information Technology", "Computer Science and System Engineering"),
-                    selectedOption = selectedOption,
-                    onOptionSelected = { selectedOption = it }
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-                LogOutButton(onLogOutClick = onLogOutClick)
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            BottomSignature()
         }
     }
 }

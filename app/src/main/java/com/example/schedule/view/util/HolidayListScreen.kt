@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.schedule.view.component.BottomSignature
 import com.example.schedule.view.component.BottomNavBar.BottomNavBar
 import com.example.schedule.view.component.HolidayItem
 import com.example.schedule.view.component.NoInternet
@@ -101,6 +102,7 @@ fun HolidayListScreen(
                     items(filteredList) { holiday ->
                         HolidayItem(holiday)
                     }
+                    item { BottomSignature() }
                 }
 
                 else -> Text(

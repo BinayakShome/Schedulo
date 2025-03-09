@@ -11,40 +11,36 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LogOutButton(onLogOutClick: () -> Unit,) {
+fun CustomButton(
+    onLogOutClick: () -> Unit,
+    text: String,
+    btncolor: Brush,
+    textcolor: Color) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(
-                brush = Brush.horizontalGradient(
-                    colors = listOf(Color(0xFFE53935), Color(0xFFFFA726))
-                ),
-                shape = RoundedCornerShape(12.dp)
-            )
-            //.shadow(6.dp, RoundedCornerShape(12.dp))
+            .background(btncolor, shape = RoundedCornerShape(12.dp))
             .clickable { onLogOutClick() }
             .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Log Out",
-            color = Color.White,
+            text = text,
+            color = textcolor,
             fontWeight = FontWeight.Bold
         )
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun LogOutButtonPreview() {
-    LogOutButton {}
-}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun LogOutButtonPreview() {
+//    LogOutButton {}
+//}
