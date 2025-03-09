@@ -37,6 +37,7 @@ import com.example.schedule.view.component.BottomSignature
 import com.example.schedule.view.component.CustomButton
 import com.example.schedule.view.component.DropDownMenu
 import com.example.schedule.vm.SettingScreenViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,19 +46,22 @@ fun SettingScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    var email by remember { mutableStateOf("binayakshome3@gmail.com") }  // Assume email is constant
-    var name by remember { mutableStateOf("Binayak Shome") }
+
+    // Get Firebase user data
+    val firebaseUser = FirebaseAuth.getInstance().currentUser
+    var email by remember { mutableStateOf(firebaseUser?.email ?: "LOL") }
+    var name by remember { mutableStateOf(firebaseUser?.displayName ?: "Pata Nhi") }
 
     val userState = remember { mutableStateOf<UserData?>(null) }
 
     LaunchedEffect(email) {
         settingScreenViewModel.getUser(email) { userData ->
-            userState.value = userData  // Update state inside callback
+            userState.value = userData
         }
     }
     val user = userState.value
 
-    // State variables to store user input
+    // State variables to store user input for additional profile fields
     var year by remember { mutableStateOf(user?.year ?: "Select your Year") }
     var branch by remember { mutableStateOf(user?.branch ?: "Select your Branch") }
     var section by remember { mutableStateOf(user?.section ?: "Select your Section") }
@@ -65,10 +69,21 @@ fun SettingScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Profile", fontSize = 24.sp, color = Color.White, fontWeight = FontWeight.SemiBold) },
+                title = {
+                    Text(
+                        text = "Profile",
+                        fontSize = 24.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.DarkGray)
@@ -84,9 +99,23 @@ fun SettingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(name, color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                // Display Firebase fetched name and email
+                Text(
+                    text = name,
+                    color = Color.White,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(email, color = Color.White, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    text = email,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text("Year", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
@@ -119,7 +148,7 @@ fun SettingScreen(
                 CustomButton(
                     onLogOutClick = {
                         val newUser = UserData(email = email, year = year, branch = branch, section = section)
-                        settingScreenViewModel.insertUser(newUser)  // Save to Room DB
+                        settingScreenViewModel.insertUser(newUser)
                         Toast.makeText(context, "Profile Saved!", Toast.LENGTH_SHORT).show()
                     },
                     text = "Save\uD83D\uDC4B",
@@ -129,7 +158,6 @@ fun SettingScreen(
                     textcolor = Color.White
                 )
             }
-
             Spacer(modifier = Modifier.height(16.dp))
             BottomSignature()
         }

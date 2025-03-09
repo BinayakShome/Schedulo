@@ -29,7 +29,7 @@ fun BottomSignature()
                     uriHandler.openUri("https://www.linkedin.com/in/binayak-shome-831b192b6/?originalSubdomain=in")
                 },
                 color = Color.White,
-                fontSize = 12.sp
+                fontSize = 15.sp
             )
             Text(" | ",color = Color.White, fontSize = 13.sp)
             Text(
@@ -37,7 +37,7 @@ fun BottomSignature()
                     uriHandler.openUri("https://wa.me/+918812989114")
                 },
                 color = Color.White,
-                fontSize = 12.sp
+                fontSize = 15.sp
             )
             Text(" | ",color = Color.White, fontSize = 13.sp)
             Text(
@@ -45,7 +45,7 @@ fun BottomSignature()
                     uriHandler.openUri("mailto:binayakshome3@gmail.com")
                 },
                 color = Color.White,
-                fontSize = 12.sp
+                fontSize = 15.sp
             )
             Text(" | ",color = Color.White, fontSize = 13.sp)
             Text(
@@ -53,7 +53,7 @@ fun BottomSignature()
                     uriHandler.openUri("https://www.instagram.com/binayakshome_06/")
                 },
                 color = Color.White,
-                fontSize = 12.sp
+                fontSize = 15.sp
             )
         }
     }
