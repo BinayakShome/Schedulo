@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,13 +47,12 @@ fun SettingScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-
-    // Get Firebase user data
     val firebaseUser = FirebaseAuth.getInstance().currentUser
     var email by remember { mutableStateOf(firebaseUser?.email ?: "LOL") }
     var name by remember { mutableStateOf(firebaseUser?.displayName ?: "Pata Nhi") }
-
     val userState = remember { mutableStateOf<UserData?>(null) }
+
+    val sections by settingScreenViewModel.sections.collectAsState() // Observe Firebase sections
 
     LaunchedEffect(email) {
         settingScreenViewModel.getUser(email) { userData ->
@@ -61,10 +61,16 @@ fun SettingScreen(
     }
     val user = userState.value
 
-    // State variables to store user input for additional profile fields
     var year by remember { mutableStateOf(user?.year ?: "Select your Year") }
     var branch by remember { mutableStateOf(user?.branch ?: "Select your Branch") }
-    var section by remember { mutableStateOf(user?.section ?: "Select your Section") }
+    var section by remember { mutableStateOf("Select your Section") }
+
+    // Fetch sections from Firebase when Year & Branch are selected
+    LaunchedEffect(year, branch) {
+        if (year != "Select your Year" && branch != "Select your Branch") {
+            settingScreenViewModel.fetchSectionsFromFirebase(year, branch)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -99,7 +105,6 @@ fun SettingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                // Display Firebase fetched name and email
                 Text(
                     text = name,
                     color = Color.White,
@@ -121,7 +126,7 @@ fun SettingScreen(
                 Text("Year", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 DropDownMenu(
                     text = "Year",
-                    options = listOf("1st Year", "2nd Year", "3rd Year", "4th Year"),
+                    options = listOf("1st Year", "2nd year", "3rd Year", "4th Year"),
                     selectedOption = year,
                     onOptionSelected = { year = it }
                 )
@@ -130,26 +135,32 @@ fun SettingScreen(
                 Text("Branch", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 DropDownMenu(
                     text = "Branch",
-                    options = listOf("Computer Science", "Information Technology", "Computer Science and System Engineering"),
+                    options = listOf("CSE", "IT", "CSSE", "CSCE"),
                     selectedOption = branch,
                     onOptionSelected = { branch = it }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 
+                // Show "Loading..." if sections are still being fetched
                 Text("Section", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 DropDownMenu(
                     text = "Section",
-                    options = listOf("CS-1", "CS-35", "CS-46"),
+                    options = if (sections.isNotEmpty()) sections else listOf("Loading..."),
                     selectedOption = section,
                     onOptionSelected = { section = it }
                 )
-
                 Spacer(modifier = Modifier.height(64.dp))
+
                 CustomButton(
                     onLogOutClick = {
-                        val newUser = UserData(email = email, year = year, branch = branch, section = section)
-                        settingScreenViewModel.insertUser(newUser)
-                        Toast.makeText(context, "Profile Saved!", Toast.LENGTH_SHORT).show()
+                        if (year == "Select your Year" || branch == "Select your Branch" || section == "Select your Section") {
+                            Toast.makeText(context, "Hmm Looks like your's data missing", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val newUser = UserData(email = email, year = year, branch = branch, section = section)
+                            settingScreenViewModel.insertUser(newUser)
+                            Toast.makeText(context, "Your Data is Now My Data", Toast.LENGTH_SHORT).show()
+                            navController.popBackStack()
+                        }
                     },
                     text = "Save\uD83D\uDC4B",
                     btncolor = Brush.horizontalGradient(

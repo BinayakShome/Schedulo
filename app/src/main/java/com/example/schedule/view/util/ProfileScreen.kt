@@ -59,6 +59,7 @@ import com.example.schedule.R
 import com.example.schedule.data.model.UserInfo.UserData
 import com.example.schedule.view.component.BottomSignature
 import com.example.schedule.view.component.CustomButton
+import com.example.schedule.view.component.LogoutConfirmationCard
 import com.example.schedule.vm.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -71,6 +72,7 @@ fun ProfileScreen(
 ) {
     val context = LocalContext.current
     val isConnected = remember { mutableStateOf(viewModel.isInternetAvailable(context)) }
+    val showLogoutDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         isConnected.value = viewModel.isInternetAvailable(context)
@@ -152,66 +154,66 @@ fun ProfileScreen(
             } else {
                 val photoUrl = firebaseUser?.photoUrl
                 Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        if (photoUrl != null) {
-                            AsyncImage(
-                                model = photoUrl,
-                                contentDescription = "Profile Picture",
-                                modifier = Modifier
-                                    .size(120.dp)
-                                    .clip(CircleShape)
-                                    .border(2.dp, Color.Cyan, CircleShape),
-                                contentScale = ContentScale.Crop
-                            )
-                        } else {
-                            Box(
-                                modifier = Modifier
-                                    .size(120.dp)
-                                    .clip(CircleShape)
-                                    .background(Color.Gray),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.AccountCircle,
-                                    contentDescription = "Default Profile",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(120.dp)
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.width(12.dp))
-
-                        Column {
-                            Text(
-                                text = firebaseUser?.displayName ?: "Naam kya rakha, bhai? 😄",
-                                color = Color.White,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Text(
-                                text = firebaseUser?.email ?: "Fraud lagte ho 😎",
-                                color = Color.White,
-                                fontSize = 16.sp,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Text(
-                                text = firebaseUser?.phoneNumber?.takeIf { it.isNotBlank() } ?: "Phone: Tumhe Kyun Batau",
-                                color = Color.White,
-                                fontSize = 14.sp,
-                                overflow = TextOverflow.Ellipsis
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (photoUrl != null) {
+                        AsyncImage(
+                            model = photoUrl,
+                            contentDescription = "Profile Picture",
+                            modifier = Modifier
+                                .size(120.dp)
+                                .clip(CircleShape)
+                                .border(2.dp, Color.Cyan, CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .size(120.dp)
+                                .clip(CircleShape)
+                                .background(Color.Gray),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.AccountCircle,
+                                contentDescription = "Default Profile",
+                                tint = Color.White,
+                                modifier = Modifier.size(120.dp)
                             )
                         }
                     }
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Column {
+                        Text(
+                            text = firebaseUser?.displayName ?: "Naam kya rakha, bhai? 😄",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = firebaseUser?.email ?: "Fraud lagte ho 😎",
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+//                            Spacer(modifier = Modifier.height(6.dp))
+//                            Text(
+//                                text = firebaseUser?.phoneNumber?.takeIf { it.isNotBlank() } ?: "Phone: Tumhe Kyun Batau",
+//                                color = Color.White,
+//                                fontSize = 14.sp,
+//                                overflow = TextOverflow.Ellipsis
+//                            )
+                    }
+                }
 
 
                 savedUser?.let { user ->
@@ -252,10 +254,10 @@ fun ProfileScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(48.dp))
 
                 CustomButton(
-                    onLogOutClick = onLogOutClick,
+                    onLogOutClick = { showLogoutDialog.value = true },
                     text = "Log out 👋",
                     btncolor = Brush.horizontalGradient(
                         colors = listOf(Color(0xFFEE0979), Color(0xFFFF6A00))
@@ -264,9 +266,19 @@ fun ProfileScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(64.dp))
             Text("Coded with ❤\uFE0F and ☕")
             BottomSignature()
         }
+    }
+
+    if (showLogoutDialog.value) {
+        LogoutConfirmationCard(
+            onConfirm = {
+                showLogoutDialog.value = false
+                onLogOutClick()
+            },
+            onDismiss = { showLogoutDialog.value = false }
+        )
     }
 }
