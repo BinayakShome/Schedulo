@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -50,35 +49,34 @@ fun WeeklySchedule(
             Text(
                 text = "📍 Room No: $roomNo",
                 color = Color.LightGray,
-                fontSize = 14.sp // 🔥 Adjusted font size for balance
+                fontSize = 14.sp
             )
         }
     }
 }
 
-// ✅ **Improved Preview**
-@Preview(showBackground = true)
-@Composable
-fun PreviewWeeklySchedule() {
-    Column(
-        modifier = Modifier
-            .background(Color.DarkGray) // 🔥 Dark theme preview background
-            .padding(12.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp), // 🔥 Adds spacing between cards
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            WeeklySchedule(subject = "OS", roomNo = "A-LH-004")
-            WeeklySchedule(subject = "DBMS", roomNo = "B-201")
-        }
-        Spacer(modifier = Modifier.height(8.dp)) // 🔥 Adds space between rows
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            WeeklySchedule(subject = "CN", roomNo = "C-105")
-            WeeklySchedule(subject = "ML", roomNo = "ETC-301")
-        }
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewWeeklySchedule() {
+//    Column(
+//        modifier = Modifier
+//            .background(Color.DarkGray)
+//            .padding(12.dp)
+//    ) {
+//        Row(
+//            horizontalArrangement = Arrangement.spacedBy(8.dp),
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            WeeklySchedule(subject = "OS", roomNo = "A-LH-004")
+//            WeeklySchedule(subject = "DBMS", roomNo = "B-201")
+//        }
+//        Spacer(modifier = Modifier.height(8.dp))
+//        Row(
+//            horizontalArrangement = Arrangement.spacedBy(8.dp),
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            WeeklySchedule(subject = "CN", roomNo = "C-105")
+//            WeeklySchedule(subject = "ML", roomNo = "ETC-301")
+//        }
+//    }
+//}
