@@ -31,7 +31,7 @@ class HolidayViewModel : ViewModel() {
         viewModelScope.launch {
             Log.d("HolidayViewModel", "Checking internet availability...")
             _isLoading.value = true
-            _showNoInternet.value = false  // Reset before fetching
+            _showNoInternet.value = false
 
             if (!NetworkUtils.isInternetAvailable(context)) {
                 Log.w("HolidayViewModel", "No internet connection detected")

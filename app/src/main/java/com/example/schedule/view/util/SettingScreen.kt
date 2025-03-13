@@ -52,7 +52,7 @@ fun SettingScreen(
     var name by remember { mutableStateOf(firebaseUser?.displayName ?: "Pata Nhi") }
     val userState = remember { mutableStateOf<UserData?>(null) }
 
-    val sections by settingScreenViewModel.sections.collectAsState() // Observe Firebase sections
+    val sections by settingScreenViewModel.sections.collectAsState()
 
     LaunchedEffect(email) {
         settingScreenViewModel.getUser(email) { userData ->
@@ -65,7 +65,6 @@ fun SettingScreen(
     var branch by remember { mutableStateOf(user?.branch ?: "Select your Branch") }
     var section by remember { mutableStateOf("Select your Section") }
 
-    // Fetch sections from Firebase when Year & Branch are selected
     LaunchedEffect(year, branch) {
         if (year != "Select your Year" && branch != "Select your Branch") {
             settingScreenViewModel.fetchSectionsFromFirebase(year, branch)
@@ -141,7 +140,6 @@ fun SettingScreen(
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Show "Loading..." if sections are still being fetched
                 Text("Section", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 DropDownMenu(
                     text = "Section",

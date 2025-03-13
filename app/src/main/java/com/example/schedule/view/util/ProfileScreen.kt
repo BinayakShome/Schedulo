@@ -185,9 +185,7 @@ fun ProfileScreen(
                             )
                         }
                     }
-
                     Spacer(modifier = Modifier.width(12.dp))
-
                     Column {
                         Text(
                             text = firebaseUser?.displayName ?: "Naam kya rakha, bhai? 😄",
@@ -205,17 +203,8 @@ fun ProfileScreen(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
-//                            Spacer(modifier = Modifier.height(6.dp))
-//                            Text(
-//                                text = firebaseUser?.phoneNumber?.takeIf { it.isNotBlank() } ?: "Phone: Tumhe Kyun Batau",
-//                                color = Color.White,
-//                                fontSize = 14.sp,
-//                                overflow = TextOverflow.Ellipsis
-//                            )
                     }
                 }
-
-
                 savedUser?.let { user ->
                     Spacer(modifier = Modifier.height(16.dp))
                     Card(
@@ -253,9 +242,7 @@ fun ProfileScreen(
                         }
                     }
                 }
-
                 Spacer(modifier = Modifier.height(48.dp))
-
                 CustomButton(
                     onLogOutClick = { showLogoutDialog.value = true },
                     text = "Log out 👋",
@@ -265,13 +252,11 @@ fun ProfileScreen(
                     textcolor = Color.White
                 )
             }
-
             Spacer(modifier = Modifier.height(64.dp))
             Text("Coded with ❤\uFE0F and ☕")
             BottomSignature()
         }
     }
-
     if (showLogoutDialog.value) {
         LogoutConfirmationCard(
             onConfirm = {

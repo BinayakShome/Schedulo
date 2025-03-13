@@ -20,7 +20,7 @@ fun NavGraphBuilder.loginNavGraph(
                 state = loginViewModel.signInResult,
                 onSignInSuccess = {
                     navController.navigate("main") {
-                        popUpTo("login_graph") { inclusive = true } // Prevent back navigation to login
+                        popUpTo("login_graph") { inclusive = true }
                     }
                 },
                 loginViewModel = loginViewModel
@@ -28,4 +28,3 @@ fun NavGraphBuilder.loginNavGraph(
         }
     }
 }
-

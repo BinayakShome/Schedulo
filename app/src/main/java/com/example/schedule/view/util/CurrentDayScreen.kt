@@ -55,11 +55,9 @@ fun CurrentDayScreen(
     val context = LocalContext.current
     val showNoInternet by viewModel.showNoInternet.collectAsState()
 
-    // Get the current user's email
     val firebaseUser = FirebaseAuth.getInstance().currentUser
     val email = firebaseUser?.email ?: "null"
 
-    // Fetch the user's schedule when the screen loads
     LaunchedEffect(Unit) {
         viewModel.checkInternetAvailability(context)
         viewModel.fetchCurrentDaySchedule(email)

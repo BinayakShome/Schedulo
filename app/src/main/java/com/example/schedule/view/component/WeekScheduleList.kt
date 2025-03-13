@@ -24,7 +24,6 @@ fun WeekScheduleList(weekSchedule: Map<String, List<Pair<String, String>>>) {
     val days = listOf(
         "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
     )
-
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -38,7 +37,6 @@ fun WeekScheduleList(weekSchedule: Map<String, List<Pair<String, String>>>) {
                         fontSize = 20.sp,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
-
                     Divider(
                         color = Color.Gray,
                         thickness = 1.dp,

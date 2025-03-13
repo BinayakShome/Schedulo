@@ -12,7 +12,6 @@ import com.example.schedule.data.model.UserInfo.UserRepository
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import kotlinx.coroutines.launch
-
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +20,7 @@ import kotlinx.coroutines.launch
 class SettingScreenViewModel(application: Application) : AndroidViewModel(application) {
     private val database = UserDatabase.getDatabase(application)
     private val repository = UserRepository(database.userDao())
-
-    private val _sections = MutableStateFlow<List<String>>(emptyList()) // Holds sections
+    private val _sections = MutableStateFlow<List<String>>(emptyList())
     val sections: StateFlow<List<String>> = _sections
 
     fun insertUser(user: UserData) {
@@ -54,8 +52,8 @@ class SettingScreenViewModel(application: Application) : AndroidViewModel(applic
         ref.get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
                 val fetchedSections = snapshot.children.mapNotNull { it.key }
-                    .filter { it.startsWith(branch) } // 🔥 Filter sections that start with the selected Branch
-                    .sortedBy { it.split("-").getOrNull(1)?.toIntOrNull() ?: Int.MAX_VALUE } // 🔥 Sort numerically
+                    .filter { it.startsWith(branch) }
+                    .sortedBy { it.split("-").getOrNull(1)?.toIntOrNull() ?: Int.MAX_VALUE }
 
                 _sections.value = fetchedSections
                 Log.d("Firebase", "Sorted Sections: $fetchedSections")

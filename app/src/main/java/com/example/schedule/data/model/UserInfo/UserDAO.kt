@@ -1,7 +1,6 @@
 package com.example.schedule.data.model.UserInfo
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,7 +12,4 @@ interface UserDao{
 
     @Query("SELECT * FROM user_data WHERE email = :email")
     suspend fun getUserByEmail(email: String): UserData?
-
-//    @Delete
-//    suspend fun deleteUser(user: UserData)
 }

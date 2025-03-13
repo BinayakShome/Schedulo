@@ -54,11 +54,9 @@ fun HolidayListScreen(
     val showNoInternet by holidayViewModel.showNoInternet.collectAsState()
     val isLoading by holidayViewModel.isLoading.collectAsState()
 
-    // 🔹 Fetch holidays when screen loads
     LaunchedEffect(Unit) {
         holidayViewModel.fetchHolidays(context)
     }
-
     Scaffold(
         bottomBar = {
             BottomNavBar(navController = navController)
@@ -71,7 +69,6 @@ fun HolidayListScreen(
                 .padding(paddingValues)
                 .padding(top = 24.dp)
         ) {
-            // Search Bar
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
@@ -87,9 +84,8 @@ fun HolidayListScreen(
                     focusedBorderColor = Color.Cyan,
                     unfocusedBorderColor = Color.Cyan
                 ),
-                shape = MaterialTheme.shapes.large // Apply rounded corners
+                shape = MaterialTheme.shapes.large
             )
-
             when {
                 isLoading -> CircularProgressIndicator(
                     modifier = Modifier
@@ -97,8 +93,7 @@ fun HolidayListScreen(
                         .padding(top = 16.dp),
                     color = Color.White
                 )
-
-                showNoInternet -> NoInternet() // ✅ Only show when internet is actually unavailable
+                showNoInternet -> NoInternet()
 
                 filteredList.isNotEmpty() -> LazyColumn {
                     items(filteredList) { holiday ->
@@ -108,7 +103,6 @@ fun HolidayListScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                         BottomSignature() }
                 }
-
                 else -> Text(
                     text = "Oh, no such holiday found? Must be some mythical holiday you’re searching for, huh? \uD83E\uDD14",
                     color = Color.White,

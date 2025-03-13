@@ -18,10 +18,8 @@ import kotlinx.coroutines.launch
 class WeekViewModel(application: Application) : AndroidViewModel(application) {
     private val database = UserDatabase.getDatabase(application)
     private val repository = UserRepository(database.userDao())
-
     private val _showNoInternet = MutableStateFlow(false)
     val showNoInternet: StateFlow<Boolean> = _showNoInternet
-
     private val _weekSchedule = MutableStateFlow<Map<String, List<Pair<String, String>>>>(emptyMap())
     val weekSchedule: StateFlow<Map<String, List<Pair<String, String>>>> = _weekSchedule
 
@@ -57,7 +55,7 @@ class WeekViewModel(application: Application) : AndroidViewModel(application) {
                             val room = it.child("room").value as? String
 
                             if (subject != null && room != null) {
-                                subject to room // 🔥 Store only Subject & Room
+                                subject to room
                             } else {
                                 Log.e("Firebase", "Skipping invalid class data: $it")
                                 null

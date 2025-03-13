@@ -9,20 +9,12 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Schedule"
         tools:targetApi="31">
-
-        <!-- Required for Firebase Google Sign-In -->
-<!--        <activity-->
-<!--            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"-->
-<!--            android:excludeFromRecents="true"-->
-<!--            android:exported="false" />-->
-
-        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -36,7 +28,5 @@
                 android:name="firebase_crashlytics_collection_enabled"
                 android:value="true" />
         </activity>
-
     </application>
-
 </manifest>

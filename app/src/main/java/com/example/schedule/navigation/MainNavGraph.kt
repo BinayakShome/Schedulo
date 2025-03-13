@@ -23,7 +23,6 @@ fun NavGraphBuilder.mainNavGraph(
         startDestination = Screen.CurrentDayScreen.route,
         route = "main"
     ) {
-        // Home Screen
         composable(Screen.CurrentDayScreen.route) {
             val currentDayViewModel: CurrentDayViewModel = viewModel()
 
@@ -33,7 +32,6 @@ fun NavGraphBuilder.mainNavGraph(
             )
         }
 
-        // Profile Screen with Logout
         composable(Screen.ProfileScreen.route) {
             val profileViewModel: ProfileViewModel = viewModel()
 

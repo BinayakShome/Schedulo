@@ -50,7 +50,6 @@ fun LoginScreen(
         loginViewModel.handleSignInResult(result.data)
     }
 
-    // Observe state changes and navigate after successful login
     LaunchedEffect(state?.success) {
         if (state?.success != null) {
             onSignInSuccess()

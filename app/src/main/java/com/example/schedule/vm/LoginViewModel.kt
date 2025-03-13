@@ -42,9 +42,8 @@ class LoginViewModel : ViewModel() {
         return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
-
     fun initGoogleSignIn(context: Activity) {
-        if (oneTapClient == null) { // Prevent re-initialization
+        if (oneTapClient == null) {
             oneTapClient = Identity.getSignInClient(context)
             signInRequest = BeginSignInRequest.builder()
                 .setGoogleIdTokenRequestOptions(
@@ -83,7 +82,6 @@ class LoginViewModel : ViewModel() {
                 signInResult = SignInResult(error = e.localizedMessage ?: "Google Sign-In failed")
             }
     }
-
 
     fun handleSignInResult(data: Intent?) {
         try {

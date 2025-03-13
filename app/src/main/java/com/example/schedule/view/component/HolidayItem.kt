@@ -27,8 +27,8 @@ fun HolidayItem(holiday: Holiday) {
             .fillMaxWidth()
             .padding(8.dp)
             .border(2.dp, Color.Cyan, shape = RoundedCornerShape(16.dp))
-            .padding(bottom = 8.dp), // Border added
-        shape = RoundedCornerShape(8.dp), // Matches border shape
+            .padding(bottom = 8.dp),
+        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Column(

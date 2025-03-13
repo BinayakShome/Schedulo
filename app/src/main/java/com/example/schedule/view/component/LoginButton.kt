@@ -50,12 +50,3 @@ fun LoginButton(
         }
     }
 }
-
-@Preview
-@Composable
-private fun LoginButton() {
-    LoginButton(
-        iconOnly = false,
-        onClick = { println("Google button clicked") }
-    )
-}

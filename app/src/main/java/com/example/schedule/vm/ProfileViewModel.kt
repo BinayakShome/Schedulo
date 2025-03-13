@@ -32,7 +32,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private var oneTapClient: SignInClient? = null
 
-    // Room database setup
     private val database = UserDatabase.getDatabase(application)
     private val repository = UserRepository(database.userDao())
 
@@ -54,7 +53,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
-    // Function to get user data from Room DB based on email
     fun getUser(email: String, callback: (UserData?) -> Unit) {
         viewModelScope.launch {
             val user = repository.getUserByEmail(email)

@@ -3,7 +3,6 @@ package com.example.schedule.view.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -23,23 +22,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownMenu(
-    text: String, // Label text
-    options: List<String>, // List of options
-    selectedOption: String, // Currently selected option
-    onOptionSelected: (String) -> Unit // Callback when an option is selected
+    text: String,
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            //.padding(8.dp)
     ) {
         OutlinedTextField(
             value = selectedOption,
@@ -73,7 +69,7 @@ fun DropDownMenu(
                     text = {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center // Center align text inside Box
+                            contentAlignment = Alignment.Center
                         ) {
                             Text(text = option)
                         }
@@ -87,16 +83,3 @@ fun DropDownMenu(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun DropDownMenuPreview() {
-//    var selectedOption by remember { mutableStateOf("Select an option") }
-//
-//    DropDownMenu(
-//        text = "Choose an item",
-//        options = listOf("Option 1", "Option 2", "Option 3"),
-//        selectedOption = selectedOption,
-//        onOptionSelected = { selectedOption = it }
-//    )
-//}

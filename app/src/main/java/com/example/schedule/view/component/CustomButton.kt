@@ -38,9 +38,3 @@ fun CustomButton(
         )
     }
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun LogOutButtonPreview() {
-//    LogOutButton {}
-//}
