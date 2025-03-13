@@ -41,7 +41,7 @@ fun WeeklySchedule(
         ) {
             Text(
                 text = subject,
-                color = Color.Cyan,
+                color = Color(0xFF00BCD4),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )

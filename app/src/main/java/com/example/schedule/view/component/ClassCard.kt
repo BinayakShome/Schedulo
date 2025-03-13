@@ -1,5 +1,6 @@
 package com.example.schedule.view.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +38,8 @@ fun CurrentClassCard(
             .padding(bottom = 8.dp)
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E)),
+        border = BorderStroke(1.dp, Color.Cyan)// Dark Gray
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -45,7 +47,7 @@ fun CurrentClassCard(
         ) {
             Text(
                 text = subject,
-                color = Color.White,
+                color = Color(0xFF00BCD4), // Cyan (Consistent with UI)
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -57,8 +59,8 @@ fun CurrentClassCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .background(Color.Gray, shape = RoundedCornerShape(6.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .background(Color(0xFF292929), shape = RoundedCornerShape(6.dp)) // Darker Gray
+                        .padding(horizontal = 10.dp, vertical = 6.dp)
                 ) {
                     Text(
                         text = "⏰ $classFrom - $classTo",
@@ -73,65 +75,15 @@ fun CurrentClassCard(
 
             Text(
                 text = "📍 Room No: $roomNo",
-                color = Color.Gray,
+                color = Color.LightGray, // Soft gray
                 fontSize = 14.sp
             )
 
             Text(
                 text = "🏛️ Campus No: $campusNo",
-                color = Color.Gray,
+                color = Color.LightGray, // Soft gray
                 fontSize = 14.sp
             )
         }
     }
 }
-
-//@Composable
-//fun CurrentDayScheduleScreen() {
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color.Black)
-//            .padding(16.dp)
-//    ) {
-//        Text(
-//            text = "📅 Today's Classes",
-//            color = Color.White,
-//            fontSize = 22.sp,
-//            fontWeight = FontWeight.Bold
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        CurrentClassCard(
-//            subject = "Data Structures & Algorithms",
-//            classFrom = "10:00 AM",
-//            classTo = "11:30 AM",
-//            roomNo = "405",
-//            campusNo = "6"
-//        )
-//
-//        CurrentClassCard(
-//            subject = "Operating Systems",
-//            classFrom = "12:00 PM",
-//            classTo = "1:30 PM",
-//            roomNo = "310",
-//            campusNo = "6"
-//        )
-//
-//        CurrentClassCard(
-//            subject = "Database Management",
-//            classFrom = "3:00 PM",
-//            classTo = "4:30 PM",
-//            roomNo = "502",
-//            campusNo = "3"
-//        )
-//    }
-//}
-//
-//// Preview Section
-//@Preview(showBackground = true, backgroundColor = 0xFF000000)
-//@Composable
-//fun PreviewCurrentDayScheduleScreen() {
-//    CurrentDayScheduleScreen()
-//}

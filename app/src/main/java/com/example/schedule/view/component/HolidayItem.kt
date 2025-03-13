@@ -35,24 +35,28 @@ fun HolidayItem(holiday: Holiday) {
             modifier = Modifier.fillMaxSize().padding(16.dp)
         ) {
             Text(holiday.EVENT,
-                fontSize = 28.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Cyan)
             Spacer(modifier = Modifier.height(16.dp))
+
             Divider(
                 color = Color.White,
                 thickness = 2.dp,
                 modifier = Modifier.fillMaxWidth()
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
             Text("Date: " + holiday.DATE,
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White)
+
             Text(holiday.DAYS,
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.White)
+                color = Color(0xFFFF6A00))
         }
     }
 }

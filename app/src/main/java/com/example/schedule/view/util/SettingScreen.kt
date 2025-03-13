@@ -126,7 +126,7 @@ fun SettingScreen(
                 Text("Year", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 DropDownMenu(
                     text = "Year",
-                    options = listOf("1st Year", "2nd year", "3rd Year", "4th Year"),
+                    options = listOf("1st Year", "2nd Year", "3rd Year", "4th Year"),
                     selectedOption = year,
                     onOptionSelected = { year = it }
                 )

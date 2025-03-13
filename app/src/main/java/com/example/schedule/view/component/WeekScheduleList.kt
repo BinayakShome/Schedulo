@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,6 +37,12 @@ fun WeekScheduleList(weekSchedule: Map<String, List<Pair<String, String>>>) {
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                         modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    Divider(
+                        color = Color.Gray,
+                        thickness = 1.dp,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
                     )
 
                     val schedule = weekSchedule[day.uppercase().take(3)] ?: emptyList()
