@@ -13,6 +13,7 @@ import com.example.schedule.view.util.WeekScreen
 import com.example.schedule.vm.CurrentDayViewModel
 import com.example.schedule.vm.ProfileViewModel
 import com.example.schedule.vm.SettingScreenViewModel
+import com.example.schedule.vm.WeekViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
@@ -49,7 +50,10 @@ fun NavGraphBuilder.mainNavGraph(
         }
 
         composable(Screen.WeekScreen.route) {
-            WeekScreen(navController = navController)
+            val weekViewModel : WeekViewModel = viewModel()
+
+            WeekScreen(navController = navController,
+                viewModel = weekViewModel)
         }
 
         composable(Screen.HolidayListScreen.route) {

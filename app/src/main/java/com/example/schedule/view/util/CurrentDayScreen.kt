@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +37,7 @@ import androidx.navigation.NavController
 import com.example.schedule.data.model.UserInfo.UserData
 import com.example.schedule.view.component.NoInternet
 import com.example.schedule.view.component.BottomNavBar.BottomNavBar
+import com.example.schedule.view.component.BottomSignature
 import com.example.schedule.view.component.CurrentClassCard
 import com.example.schedule.vm.CurrentDayViewModel
 import com.example.schedule.vm.SettingScreenViewModel
@@ -58,7 +60,8 @@ fun CurrentDayScreen(
     val email = firebaseUser?.email ?: "null"
 
     // Fetch the user's schedule when the screen loads
-    LaunchedEffect(email) {
+    LaunchedEffect(Unit) {
+        viewModel.checkInternetAvailability(context)
         viewModel.fetchCurrentDaySchedule(email)
     }
 
@@ -119,7 +122,7 @@ fun CurrentDayScreen(
                 if (classSchedule.isEmpty()) {
                     item {
                         Text(
-                            text = "No classes scheduled today 😎",
+                            text = "Hurary!!! No classes scheduled today 😎",
                             color = Color.LightGray,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
@@ -131,13 +134,17 @@ fun CurrentDayScreen(
                     items(classSchedule) { classItem ->
                         CurrentClassCard(
                             subject = classItem.subject,
-                            classFrom = classItem.time.split("-")[0] + ":00",
-                            classTo = classItem.time.split("-")[1] + ":00",
+                            classFrom = classItem.time.split("-")[0],
+                            classTo = classItem.time.split("-")[1],
                             roomNo = classItem.room,
                             campusNo = classItem.campus
                         )
                     }
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                BottomSignature()
             }
         }
     }
