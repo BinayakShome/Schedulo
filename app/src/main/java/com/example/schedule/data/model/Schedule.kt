@@ -1,8 +1,8 @@
 package com.example.schedule.data.model
 
-data class Schedule(
-    val endTime: String? = null,
-    val room: String? = null,
-    val startTime: String? = null,
-    val subject: String? = null
+data class ClassSchedule(
+    val subject: String = "",
+    val time: String = "",
+    val room: String = "",
+    val campus: String = ""
 )
