@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +35,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.schedule.R
 import com.example.schedule.data.model.UserInfo.UserData
 import com.example.schedule.view.component.NoInternet
 import com.example.schedule.view.component.BottomNavBar.BottomNavBar
@@ -119,9 +126,28 @@ fun CurrentDayScreen(
                 }
                 if (classSchedule.isEmpty()) {
                     item {
+                        val composition by rememberLottieComposition(
+                            LottieCompositionSpec.RawRes(R.raw.no_class_animation)
+                        )
+                        val progress by animateLottieCompositionAsState(
+                            composition = composition,
+                            iterations = LottieConstants.IterateForever
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            LottieAnimation(
+                                composition = composition,
+                                progress = { progress },
+                                modifier = Modifier.size(304.dp)
+                            )
+                        }
                         Text(
                             text = "Hurary!!! No classes scheduled today 😎",
-                            color = Color.LightGray,
+                            color = Color(0xdFFF6A01),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
                             textAlign = TextAlign.Center,
