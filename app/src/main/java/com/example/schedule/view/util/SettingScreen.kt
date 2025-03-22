@@ -143,7 +143,7 @@ fun SettingScreen(
                 Text("Section", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 DropDownMenu(
                     text = "Section",
-                    options = if (sections.isNotEmpty()) sections else listOf("Loading..."),
+                    options = if (sections.isNotEmpty()) sections else listOf("Looking out for your Section..."),
                     selectedOption = section,
                     onOptionSelected = { section = it }
                 )

@@ -26,7 +26,7 @@ import com.example.schedule.R
 fun NoInternet()
 {
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.other_screen_no_internet_animation)
+        LottieCompositionSpec.RawRes(R.raw.no_internet)
     )
     val progress by animateLottieCompositionAsState(
         composition = composition,
@@ -45,7 +45,7 @@ fun NoInternet()
             modifier = Modifier.size(400.dp)
         )
         Text(
-            text = "The internet got lost... didn’t drop a pin!",
+            text = "Aliens must have stolen your Wi-Fi! \uD83D\uDC7D",
             color = Color.White,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,

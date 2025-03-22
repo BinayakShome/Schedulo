@@ -2,7 +2,6 @@ package com.example.schedule.view.util
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,14 +12,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -133,7 +130,7 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (!isConnected.value) {
-                val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.profile_screen_no_internet_animation))
+                val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.no_internet2))
                 val progress by animateLottieCompositionAsState(
                     composition = composition,
                     iterations = LottieConstants.IterateForever
@@ -144,7 +141,7 @@ fun ProfileScreen(
                     modifier = Modifier.size(250.dp)
                 )
                 Text(
-                    text = "Aliens must have stolen your Wi-Fi! 👽",
+                    text = "The internet got lost... didn’t drop a pin!",
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
