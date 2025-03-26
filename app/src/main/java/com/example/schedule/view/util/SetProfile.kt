@@ -1,6 +1,5 @@
 package com.example.schedule.view.util
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -23,11 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.schedule.data.model.UserInfo.UserData
 import com.example.schedule.view.component.BottomSignature
 import com.example.schedule.view.component.CustomButton
@@ -39,8 +36,7 @@ import com.google.firebase.auth.FirebaseAuth
 fun SetProfile(
     settingScreenViewModel: SettingScreenViewModel,
     navController: NavController
-)
-{
+) {
     val context = LocalContext.current
     val firebaseUser = FirebaseAuth.getInstance().currentUser
     var email by remember { mutableStateOf(firebaseUser?.email ?: "Mr_Unknown.com ??") }
