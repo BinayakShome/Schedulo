@@ -28,6 +28,9 @@ class CurrentDayViewModel(application: Application) : AndroidViewModel(applicati
     private val _classSchedule = MutableStateFlow<List<ClassSchedule>>(emptyList())
     val classSchedule: StateFlow<List<ClassSchedule>> = _classSchedule
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     fun checkInternetAvailability(context: Context) {
         viewModelScope.launch {
             _showNoInternet.value = !NetworkUtils.isInternetAvailable(context)
@@ -36,6 +39,8 @@ class CurrentDayViewModel(application: Application) : AndroidViewModel(applicati
 
     fun fetchCurrentDaySchedule(email: String) {
         viewModelScope.launch {
+            _isLoading.value = true // Start loading
+
             val user = repository.getUserByEmail(email)
             val section = user?.section ?: return@launch
             val year = user?.year ?: return@launch
@@ -78,8 +83,10 @@ class CurrentDayViewModel(application: Application) : AndroidViewModel(applicati
                 } else {
                     Log.e("Firebase", "No schedule found for $section on $shortDay (Empty snapshot)")
                 }
+                _isLoading.value = false // Stop loading after success or failure
             }.addOnFailureListener {
                 Log.e("Firebase", "Failed to fetch schedule", it)
+                _isLoading.value = false // Stop loading on failure
             }
         }
     }
